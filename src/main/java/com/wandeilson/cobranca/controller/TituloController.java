@@ -1,6 +1,5 @@
 package com.wandeilson.cobranca.controller;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,6 +36,10 @@ public class TituloController {
 		ModelAndView mv = new ModelAndView("CadastroTitulo");
 		mv.addObject("mensagem","Título salvo com sucesso!");
 		return mv;
+	}
+	@RequestMapping
+	public String pesquisar() {
+		return "PesquisaTitulos";
 	}
 	
 	@ModelAttribute("todosStatusTitulo")
