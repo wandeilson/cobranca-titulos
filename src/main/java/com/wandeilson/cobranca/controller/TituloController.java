@@ -30,6 +30,7 @@ public class TituloController {
 		mv.addObject("todosStatusTitulo", StatusTitulo.values());
 		return mv;
 	}
+	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView salvar(Titulo titulo) {
 		titulos.save(titulo);
