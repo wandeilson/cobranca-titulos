@@ -30,7 +30,11 @@ public class Titulo {
 	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal valor;
 	@Enumerated(EnumType.STRING)
-	private StatusTitulo Status;
+	private StatusTitulo status;
+	
+	public boolean isPendente() {
+		return StatusTitulo.PENDENTE.equals(this.status);
+	}
 	
 	@Override
 	public int hashCode() {
@@ -72,9 +76,9 @@ public class Titulo {
 		this.valor = valor;
 	}
 	public StatusTitulo getStatus() {
-		return Status;
+		return status;
 	}
 	public void setStatus(StatusTitulo status) {
-		Status = status;
+		this.status = status;
 	}
 }
