@@ -24,8 +24,9 @@ public class TituloController {
 	
 	private static final String CADASTRO_VIEW = "CadastroTitulo";
 	
-	@Autowired//O proprio spring nos dá uma implementação desse repositoty, por isso não é necessário que 
+	//O proprio spring nos dá uma implementação desse repositoty, por isso não é necessário que 
 	//seja instanciada algo concreto. Isso acontece atraves do IoC
+	@Autowired
 	private Titulos titulos;
 	
 
@@ -53,7 +54,7 @@ public class TituloController {
 		mv.addObject("titulos",todosTitulos);
 		return mv;
 	}
-	
+	 
 	@RequestMapping ("{codigo}")
 	public ModelAndView edicao (@PathVariable Long codigo){
 		 Titulo titulo = titulos.findOne(codigo);
@@ -62,7 +63,13 @@ public class TituloController {
 		 return mv;
 	}
 	
-	
+	@RequestMapping(value= "{codigo}", method = RequestMethod.DELETE )
+	public String excluir( @PathVariable Long codigo, RedirectAttributes attributes ) {
+		titulos.delete(codigo);
+		attributes.addFlashAttribute("mensagem", "Título excluído com sucesso.");
+		return "redirect:/titulos";
+	}
+		
 	@ModelAttribute("todosStatusTitulo")
 	public List<StatusTitulo> todosStatusTitulo(){
 		return Arrays.asList(StatusTitulo.values());

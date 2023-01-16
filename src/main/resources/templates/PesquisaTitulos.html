@@ -8,6 +8,7 @@
 
 
 <section layout:fragment="conteudo">
+	<div layout:include="MensagemGeral" ></div>
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<div class="clearfix">
@@ -31,17 +32,21 @@
 			</thead>
 			<tbody>
 				<tr th:each="titulo : ${titulos} " >
-					<td class="text-center" th:text="${titulo.codigo}"></td>
-					<td th:text="${titulo.descricao}">  </td>
+					<td class="text-center" th:text="${titulo.codigo}">1</td>
+					<td th:text="${titulo.descricao}"></td>
 					<td class="text-center" th:text="${{titulo.dataVencimento}}"></td>
-					<td class="text-right" th:text = "| R$ ${{titulo.valor}}|"></td>
-					<td class="text-center" > 
+					<td class="text-right" th:text = "|R$ ${{titulo.valor}}|"></td>
+					<td class="text-center"> 
 						<span class="label" th:text="${titulo.status.descricao}"
-						 th:classappend="${titulo.pendente ? 'label-danger' : 'label-success' }"> </span>
+						 	th:classappend="${titulo.pendente ? 'label-danger' : 'label-success' }"> </span>
 					</td>
 					<td class="text-center">
 						<a class="btn btn-link btn-xs" th:href="@{/titulos/{codigo}(codigo=${titulo.codigo})}">
 							<span class="glyphicon glyphicon-pencil" > </span>
+						</a>
+						<a class="btn btn-link btn-xs" data-toggle="modal" data-target="#confirmacaoExclusaoModal"
+							th:attr="data-codigo=${titulo.codigo}, data-descricao=${titulo.descricao}" >
+							<span class="glyphicon glyphicon-remove" ></span>
 						</a>
 					</td>
 				</tr>
@@ -50,6 +55,9 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+	<div layout:include="DialogoConfirmacaoExclusao">
+		
 	</div>
 </section>
 
