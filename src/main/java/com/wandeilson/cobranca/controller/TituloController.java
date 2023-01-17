@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.wandeilson.cobranca.model.StatusTitulo;
 import com.wandeilson.cobranca.model.Titulo;
-import com.wandeilson.cobranca.repository.Titulos;
+import com.wandeilson.cobranca.repository.filter.TituloFilter;
 import com.wandeilson.cobranca.service.CadastroTituloService;
 
 @Controller
@@ -29,8 +28,6 @@ public class TituloController {
 	
 	//O proprio spring nos dá uma implementação desse repositoty, por isso não é necessário que 
 	//seja instanciada algo concreto. Isso acontece atraves do IoC
-	@Autowired
-	private Titulos titulos;
 	
 	@Autowired
 	private CadastroTituloService cadastroTituloService;
@@ -59,19 +56,18 @@ public class TituloController {
 		}
 	}
 	@RequestMapping
-	public ModelAndView pesquisar() {
-		List<Titulo> todosTitulos =  titulos.findAll();
+	public ModelAndView pesquisar( @ModelAttribute("filtro") TituloFilter filtro ) {
+		List<Titulo> todosTitulos = cadastroTituloService.filtrar(filtro);
 		ModelAndView mv = new ModelAndView("PesquisaTitulos");
 		mv.addObject("titulos",todosTitulos);
 		return mv;
 	}
 	 
-	@RequestMapping ("{codigo}")
-	public ModelAndView edicao (@PathVariable Long codigo){
-		 Titulo titulo = titulos.findOne(codigo);
-		 ModelAndView mv = new ModelAndView(CADASTRO_VIEW);
-		 mv.addObject(titulo);
-		 return mv;
+	@RequestMapping("{codigo}")
+	public ModelAndView edicao(@PathVariable("codigo") Titulo titulo) {
+		ModelAndView mv = new ModelAndView(CADASTRO_VIEW); 
+		mv.addObject(titulo);
+		return mv;
 	}
 	
 	@RequestMapping(value= "{codigo}", method = RequestMethod.DELETE )

@@ -1,5 +1,7 @@
 package com.wandeilson.cobranca.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -7,9 +9,11 @@ import org.springframework.stereotype.Service;
 import com.wandeilson.cobranca.model.StatusTitulo;
 import com.wandeilson.cobranca.model.Titulo;
 import com.wandeilson.cobranca.repository.Titulos;
+import com.wandeilson.cobranca.repository.filter.TituloFilter;
 
 @Service
 public class CadastroTituloService {
+	
 	@Autowired
 	private Titulos titulos;
 	
@@ -30,6 +34,11 @@ public class CadastroTituloService {
 		titulo.setStatus(StatusTitulo.RECEBIDO);
 		titulos.save(titulo);
 		return StatusTitulo.RECEBIDO.getDescricao();
+	}
+	
+	public List<Titulo> filtrar(TituloFilter filtro){
+		String descricao = filtro.getDescricao() == null ? "%" : filtro.getDescricao();
+		return titulos.findByDescricaoContaining(descricao);
 	}
 	
 }
